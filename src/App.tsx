@@ -2,7 +2,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { AuthContext } from 'contexts/AuthContext';
 import Login from 'pages/Auth/Login';
-import Signup from 'pages/Auth/Signup';
+import Signup from 'pages/Auth/Signup/Signup';
 import { useState } from 'react';
 
 const darkTheme = createTheme({

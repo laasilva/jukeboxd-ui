@@ -1,14 +1,15 @@
-import { Box, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, Link, Container, InputAdornment, IconButton } from "@mui/material";
+import { Box, Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid, Link, Container, InputAdornment, IconButton, CircularProgress } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAuthContext } from "contexts/AuthContext";
 import Copyright from "components/Copyright/Copyright";
 import { useState, useEffect } from "react";
 import useAuth from "hooks/useAuth";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import Toast from "components/Toast/Toast";
 
 const Login = () => {
   const { setLogin, setSignup, setToken } = useAuthContext();
-  const {response, setPostData} = useAuth.Authenticate();
+  const { response, setPostData, authError, authLoading } = useAuth.Authenticate();
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -36,6 +37,10 @@ const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs">
+      { 
+        authError && 
+        <Toast message="Please verify if user and/or password are correct" severity="error" />
+      }
       <Box
         sx={{
           marginTop: 8,
@@ -59,6 +64,7 @@ const Login = () => {
             label="Username"
             name="username"
             autoComplete="username"
+            disabled={authLoading}
             autoFocus
           />
           <TextField
@@ -70,6 +76,7 @@ const Login = () => {
             type={showPassword ? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
+            disabled={authLoading}
             InputProps={{
               endAdornment: <InputAdornment position="end">
                 <IconButton
@@ -93,6 +100,10 @@ const Login = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
+            { 
+              authLoading && 
+              <CircularProgress color="inherit" size={16} style={{marginRight: "10px"}} />
+            }
             Sign In
           </Button>
           <Grid container>
