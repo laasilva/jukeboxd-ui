@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useFetch } from "./useFetch";
 
 const useArtists = {
@@ -22,6 +23,29 @@ const useArtists = {
       artistData, 
       artistLoading,
       artistError
+    };
+  },
+
+  Search: () => {
+    const [query, setQuery] = useState<any>();
+    const [request, setRequest] = useState<any>();
+    const {
+      data: artistsData,
+      loading: artistsLoading,
+      error: artistsError
+    } = useFetch(request)
+
+    useEffect(() => {
+      if (query) {
+        setRequest(`${process.env.REACT_APP__API_URL}/artists/search?name=${query}`);
+      }
+    }, [query]);
+
+    return {
+      artistsData,
+      setQuery,
+      artistsLoading,
+      artistsError
     };
   },
 

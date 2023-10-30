@@ -13,12 +13,12 @@ export type ContextProps = {
   setDescription?: any;
   genres?: string[];
   setGenres?: any;
-  favoriteArtist?: any;
-  setFavoriteArtist?: any;
-  favoriteAlbum?: any;
-  setFavoriteAlbum?: any;
-  favoriteSong?: any;
-  setFavoriteSong?: any;
+  favoriteArtists?: any;
+  setFavoriteArtists?: any;
+  favoriteAlbums?: any;
+  setFavoriteAlbums?: any;
+  favoriteSongs?: any;
+  setFavoriteSongs?: any;
   picture?: any;
   setPicture?: any;
 }

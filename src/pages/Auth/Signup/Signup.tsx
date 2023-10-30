@@ -4,8 +4,9 @@ import { useAuthContext } from "contexts/AuthContext";
 import Copyright from "components/Copyright/Copyright";
 import Step1 from "./Steps/Step1";
 import { SignupContext } from "contexts/SignupContext";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import React from "react";
+import Step2 from "./Steps/Step2";
 
 const Signup = () => {
   const steps = ['Account information', 'Music taste', 'Your Picture'];
@@ -21,9 +22,9 @@ const Signup = () => {
   const [password, setPassword] = useState<string>();
   const [description, setDescription] = useState<string>();
   const [genres, setGenres] = useState<string[]>();
-  const [favoriteArtist, setFavoriteArtist] = useState<any>();
-  const [favoriteAlbum, setFavoriteAlbum] = useState<any>();
-  const [favoriteSong, setFavoriteSong] = useState<any>();
+  const [favoriteArtists, setFavoriteArtists] = useState<any>();
+  const [favoriteAlbums, setFavoriteAlbums] = useState<any>();
+  const [favoriteSongs, setFavoriteSongs] = useState<any>();
   const [picture, setPicture] = useState<any>();
 
   function isStepSkipped(step: number) {
@@ -52,18 +53,53 @@ const Signup = () => {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    switch (activeStep) {
+      case 0:
+        handleAccount(data);
+        break ;
+      case 1:
+        handleInfo(data);
+        break ;
+      case 2:
+        handlePicture(data);
+        break ;
+    } 
+
+    handleNext();
   };
+
+  function handleAccount(data: any) {
+    var accountObject = {
+      name: data.get('firstName') + " " + data.get('lastName'),
+      email: data.get('email'),
+      username: data.get('username'),
+      password: data.get('password'),
+    };
+
+    console.log(accountObject);
+  }
+
+  function handleInfo(data: any) {
+    var infoObject = {
+
+    }
+
+    console.log(infoObject);
+  }
+
+  function handlePicture(data: any) {
+    var pictureObject = {
+
+    }
+
+    console.log(pictureObject);
+  }
 
   return (
     <Container component="main" maxWidth="md">
       <StepperContext.Provider value={{ completed, setCompleted }}>
-        <Box sx={{ 
-          width: '100%',
-        }}>
+        <Box sx={{ width: '100%' }} component="form" noValidate onSubmit={handleSubmit}>
             <Box
             sx={{
               marginTop: 8,
@@ -80,7 +116,6 @@ const Signup = () => {
             </Box>
           <Stepper activeStep={activeStep} sx={{marginTop: 4}}>
             {steps.map((label, index) => {
-              console.log(label, index);
               const stepProps: { completed?: boolean } = {};
               const labelProps: {
                 optional?: React.ReactNode;
@@ -105,7 +140,7 @@ const Signup = () => {
                   alignItems: 'center',
                 }}
               >
-                <Box component="form" noValidate onSubmit={handleSubmit}>
+                <Box>
                   <SignupContext.Provider value={{ 
                     name,
                     setName,
@@ -119,16 +154,17 @@ const Signup = () => {
                     setDescription,
                     genres,
                     setGenres,
-                    favoriteArtist,
-                    setFavoriteArtist,
-                    favoriteAlbum,
-                    setFavoriteAlbum,
-                    favoriteSong,
-                    setFavoriteSong,
+                    favoriteArtists,
+                    setFavoriteArtists,
+                    favoriteAlbums,
+                    setFavoriteAlbums,
+                    favoriteSongs,
+                    setFavoriteSongs,
                     picture,
                     setPicture
                   }}>
                     {activeStep === 0 && <Step1 />}
+                    {activeStep === 1 && <Step2 />}
                   </SignupContext.Provider>
                   <Grid container justifyContent="flex-end">
                     <Grid item marginTop={4}>
@@ -178,8 +214,8 @@ const Signup = () => {
                       Sign me up!
                   </Button> :
                   <Button 
-                    variant="contained"
-                    onClick={handleNext}>
+                    type="submit"
+                    variant="contained">
                     Next
                   </Button>
               }

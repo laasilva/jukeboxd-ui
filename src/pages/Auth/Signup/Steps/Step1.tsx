@@ -7,19 +7,13 @@ import useAuth from "hooks/useAuth";
 const Step1 = () => {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}/gm;
   const emailRegex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g;
+  
   const [passwordIsValid, setPasswordIsValid] = useState<boolean>(true);
   const [finalMatch, setFinalMatch] = useState<boolean>(false);
   const [passwordText, setPasswordText] = useState<string>("");
   const [passwordFinal, setPasswordFinal] = useState<string>("");
   const [emailErrorText, setEmailErrorText] = useState<string>("");
   const [emailError, setEmailError] = useState<boolean>(false);
-  const {
-    name,
-    setName,
-    setEmail,
-    setUsername,
-    setPassword,
-  } = useSignupContext();
 
   const usernameExists = useState<boolean>(false);
   const minUsernameLength = 8;
@@ -46,7 +40,6 @@ const Step1 = () => {
     }
 
     setEmailError(false);
-    setEmail(input);
   }
 
   function passwordValidation(input: string) {
@@ -68,7 +61,6 @@ const Step1 = () => {
 
     setPasswordIsValid(match);
     setPasswordFinal(input);
-    setPassword(input);
   }
   
   return (
@@ -79,7 +71,7 @@ const Step1 = () => {
       <Typography component="p" variant="caption" marginBottom={2}>
         Your username and password will allow you to log into the platform.
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12} sm={6}>
           <TextField
             autoComplete="given-name"
@@ -88,9 +80,6 @@ const Step1 = () => {
             fullWidth
             id="firstName"
             label="First Name"
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
             autoFocus />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -100,10 +89,7 @@ const Step1 = () => {
             id="lastName"
             label="Last Name"
             name="lastName"
-            autoComplete="family-name"
-            onChange={(event) => {
-              setName(name + " " + event.target.value);
-            }} />
+            autoComplete="family-name" />
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -139,8 +125,6 @@ const Step1 = () => {
 
               setIsMinLength(true);
               setUsern(value);
-              
-              setUsername(value);
             }} />
         </Grid>
         <Grid item xs={12}>
